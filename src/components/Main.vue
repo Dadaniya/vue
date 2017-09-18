@@ -1,15 +1,15 @@
 <template>
 <div>
- <form class="form-inline">
-  <div class="form-group">
-    <label class="sr-only" for="exampleInputAmount">key for search</label>
-    <div class="input-group">
-            <input type="text" class="form-control" id="exampleInputAmount" placeholder="keys" v-model="searchQuery">
-      <div class="input-group-addon glyphicon glyphicon-zoom-in"></div>
+  <form class="form-inline">
+    <div class="form-group">
+      
+      <div class="input-group">
+        <input type="text" class="form-control"  placeholder="keys" v-model="searchQuery">
+        <div class="input-group-addon glyphicon glyphicon-zoom-in"></div>
+      </div>
     </div>
-  </div>
-  <!-- <button type="submit" class="btn btn-primary">search</button> -->
-</form>
+    <!-- <button type="submit" class="btn btn-primary">search</button> -->
+  </form>
   <table class="table table-bordered table-hover">
     <thead>
       <tr>
@@ -17,7 +17,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(file,index) in filelists">
+      <tr v-for="(file,index) in search">
         <td>{{index+1}}</td>
         <td v-for="item in file">{{item}}</td>
       </tr>
@@ -28,13 +28,29 @@
 <script>
 export default {
 name: 'main',
-data () {
+data:function () {
 return {
 cols:["num","name","start","end","author","isPay"],
-filelists:[{1:"active",2:"2016",3:"2017",4:"nzw",5:"true"},{1:"active",2:"2016",3:"2017",4:"nzw",5:"true"}]
+filelists:[{1:"active",2:"2016",3:"2017",4:"nzw",5:"true"},{1:"active",2:"2016",3:"2017",4:"nzw",5:"true"}],
+searchQuery:''
 }
 },
 method:{
+},
+computed:{
+  search:function(){
+    var items=this.filelists;
+    var _this=this;
+    // console.log(items);
+    if(!this.searchQuery) return items;
+    // console.log(this.searchQuery);
+
+    return items.filter(function(value){
+        // console.log(typeof value[1]);
+        // console.log(value[1].indexOf(_this.searchQuery));
+      return value[1].indexOf(_this.searchQuery)!=-1;
+    })
+  }
 },
 mounted:function(){
 this.$nextTick(function(){
