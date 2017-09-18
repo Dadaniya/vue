@@ -13,7 +13,11 @@
   <table class="table table-bordered table-hover">
     <thead>
       <tr>
-        <th class="text-center" v-for="key in cols">{{key}}</th>
+        <th class="text-center">num</th>
+        <th class="text-center" v-for="key in cols" @click="sortkey(key)" >
+          {{key}}
+          <span class="caret"></span>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -30,12 +34,25 @@ export default {
 name: 'main',
 data:function () {
 return {
-cols:["num","name","start","end","author","isPay"],
-filelists:[{1:"active",2:"2016",3:"2017",4:"nzw",5:"true"},{1:"active",2:"2016",3:"2017",4:"nzw",5:"true"}],
-searchQuery:''
+cols:["name","start","end","author","isPay"],
+filelists:[{"name":"active","start":"2016","end":"2017","autor":"nzw","isPay":"true"},{"name":"numberß","start":"2016","end":"2017","autor":"ty","isPay":"true"}],
+searchQuery:'',
+order:1
 }
 },
-method:{
+methods:{
+  sortkey:function(key){
+    var _this=this;
+    this.order=this.order*-1;
+    this.filelists.sort(function(a,b){
+      console.log(a);
+      a=a[key];
+      b=b[key];
+      console.log(a);
+      console.log(key);
+      return (a===b?0:a>b?1:-1)*_this.order
+    });
+  }
 },
 computed:{
   search:function(){
