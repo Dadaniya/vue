@@ -12,9 +12,9 @@
   </form>
   <table class="table table-bordered table-hover">
     <thead>
-      <tr>
+      <tr >
         <th class="text-center">num</th>
-        <th class="text-center" v-for="key in cols" @click="sortkey(key)" >
+        <th class="text-center" v-for="key in cols" @click="sortkey(key)" :class="{dropup:order[key]==1}">
           {{key}}
           <span class="caret"></span>
         </th>
@@ -33,41 +33,38 @@
 export default {
 name: 'main',
 data:function () {
+var cols=["name","start","end","author","isPay"];
+var order={}
+cols.forEach(i=>order[i]=1);
 return {
-cols:["name","start","end","author","isPay"],
+cols:cols,
 filelists:[{"name":"active","start":"2016","end":"2017","autor":"nzw","isPay":"true"},{"name":"numberß","start":"2016","end":"2017","autor":"ty","isPay":"true"}],
 searchQuery:'',
-order:1
+order:order
 }
 },
 methods:{
-  sortkey:function(key){
-    var _this=this;
-    this.order=this.order*-1;
-    this.filelists.sort(function(a,b){
-      console.log(a);
-      a=a[key];
-      b=b[key];
-      console.log(a);
-      console.log(key);
-      return (a===b?0:a>b?1:-1)*_this.order
-    });
-  }
+sortkey:function(key){
+var _this=this;
+this.order[key]=this.order[key]*-1;
+this.filelists.sort(function(a,b){
+console.log(a);
+a=a[key];
+b=b[key];
+return (a===b?0:a>b?1:-1)*_this.order[key]
+});
+}
 },
 computed:{
-  search:function(){
-    var items=this.filelists;
-    var _this=this;
-    // console.log(items);
-    if(!this.searchQuery) return items;
-    // console.log(this.searchQuery);
-
-    return items.filter(function(value){
-        // console.log(typeof value[1]);
-        // console.log(value[1].indexOf(_this.searchQuery));
-      return value[1].indexOf(_this.searchQuery)!=-1;
-    })
-  }
+search:function(){
+var items=this.filelists;
+var _this=this;
+if(!this.searchQuery) return items;
+return items.filter(function(value){
+console.log( value.name.indexOf(_this.searchQuery)!=-1|| value.author.indexOf(_this.searchQuery)!=-1);
+return value.name.indexOf(_this.searchQuery)!=-1|| value.author.indexOf(_this.searchQuery)!=-1;
+})
+}
 },
 mounted:function(){
 this.$nextTick(function(){
