@@ -29,7 +29,7 @@
         <td>
           <div class="btn-group">
             
-          <button class="btn btn-default" data-toggle="modal" data-target="#myModal">edit</button>
+          <button class="btn btn-default" data-toggle="modal" data-target="#myModal" :data-whatever="index">edit</button>
           <button class="btn btn-default">down</button>
           </div>
         </td>
@@ -63,8 +63,22 @@ a=a[key];
 b=b[key];
 return (a===b?0:a>b?1:-1)*_this.order[key]
 });
-}
 },
+dosomething:function(){
+  $('#myModal').on('show.bs.modal',
+function(e){
+  // e.preventDefault();
+  // e.stopPropagation();
+var bar=$(e.relatedTarget);
+var re=bar.data('whatever');
+var modal=$(this);
+console.log(re);
+}
+    )
+}
+  
+},
+
 computed:{
 search:function(){
 var items=this.filelists;
