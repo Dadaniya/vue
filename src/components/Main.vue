@@ -1,5 +1,6 @@
 <template>
 <div>
+  <slot name="header"></slot>
   <form class="form-inline">
     <div class="form-group">
       
@@ -18,15 +19,25 @@
           {{key}}
           <span class="caret"></span>
         </th>
+        <th class="text-center">操作</th>
       </tr>
     </thead>
     <tbody>
       <tr v-for="(file,index) in search">
         <td>{{index+1}}</td>
         <td v-for="item in file">{{item}}</td>
+        <td>
+          <div class="btn-group">
+            
+          <button class="btn btn-default" data-toggle="modal" data-target="#myModal">edit</button>
+          <button class="btn btn-default">down</button>
+          </div>
+        </td>
       </tr>
     </tbody>
   </table>
+  <slot name="footer"></slot>
+ 
 </div>
 </template>
 <script>
@@ -48,7 +59,6 @@ sortkey:function(key){
 var _this=this;
 this.order[key]=this.order[key]*-1;
 this.filelists.sort(function(a,b){
-console.log(a);
 a=a[key];
 b=b[key];
 return (a===b?0:a>b?1:-1)*_this.order[key]
@@ -61,7 +71,6 @@ var items=this.filelists;
 var _this=this;
 if(!this.searchQuery) return items;
 return items.filter(function(value){
-console.log( value.name.indexOf(_this.searchQuery)!=-1|| value.author.indexOf(_this.searchQuery)!=-1);
 return value.name.indexOf(_this.searchQuery)!=-1|| value.author.indexOf(_this.searchQuery)!=-1;
 })
 }
