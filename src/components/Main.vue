@@ -85,8 +85,8 @@ searchQuery:'',
 searchList:[],
 order:order,
 modalItem:{},
-}
-},
+actionType:'',
+}},
 methods:{
 sortkey:function(key){
 var _this=this;
@@ -100,7 +100,7 @@ return (a===b?0:a>b?1:-1)*_this.order[key]
 dosomething:function(){
 },
 saveChange:function(){
-console.log("saveChange");
+console.log(this.actionType);
 }
 },
 computed:{
@@ -128,10 +128,11 @@ var bar=$(e.relatedTarget);
 var re=bar.data('whatever');
 switch (re){
 case -1:
+_this.actionType='post'
 _this.modalItem={};
-_this.cols.forEach(x=>_this.modalItem[x]='');console.log(_this.modalItem);
 break;
 default:
+_this.actionType='update'
 _this.modalItem=JSON.parse(JSON.stringify(_this.searchList[re]));
 
 }
