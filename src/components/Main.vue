@@ -1,6 +1,5 @@
 <template>
 <div>
-  <slot name="header"></slot>
   <form class="form-inline">
     <div class="form-group">
       
@@ -29,15 +28,37 @@
         <td>
           <div class="btn-group">
             
-          <button class="btn btn-default" data-toggle="modal" data-target="#myModal" :data-whatever="index">edit</button>
-          <button class="btn btn-default">down</button>
+            <button class="btn btn-default" data-toggle="modal" data-target="#myModal" :data-whatever="index">edit</button>
+            <button class="btn btn-default">down</button>
           </div>
         </td>
       </tr>
     </tbody>
   </table>
-  <slot name="footer"></slot>
- 
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">{{modalItem.name}}</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="form-group" v-for="(value,key) in modalItem">
+              <label class="col-sm-2 control-label">{{key}}</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" v-model="modalItem[key]"/>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+</div>
 </div>
 </template>
 <script>
@@ -51,7 +72,9 @@ return {
 cols:cols,
 filelists:[{"name":"active","start":"2016","end":"2017","autor":"nzw","isPay":"true"},{"name":"numberß","start":"2016","end":"2017","autor":"ty","isPay":"true"}],
 searchQuery:'',
-order:order
+searchList:[],
+order:order,
+modalItem:{},
 }
 },
 methods:{
@@ -65,37 +88,35 @@ return (a===b?0:a>b?1:-1)*_this.order[key]
 });
 },
 dosomething:function(){
-  $('#myModal').on('show.bs.modal',
-function(e){
-  // e.preventDefault();
-  // e.stopPropagation();
-var bar=$(e.relatedTarget);
-var re=bar.data('whatever');
-var modal=$(this);
-console.log(re);
 }
-    )
-}
-  
-},
 
+},
 computed:{
 search:function(){
 var items=this.filelists;
 var _this=this;
-if(!this.searchQuery) return items;
-return items.filter(function(value){
+if(!this.searchQuery) return this.searchList=items;
+return this.searchList=items.filter(function(value){
 return value.name.indexOf(_this.searchQuery)!=-1|| value.author.indexOf(_this.searchQuery)!=-1;
 })
 }
 },
 mounted:function(){
-this.$nextTick(function(){
 var _this=this;
+this.$nextTick(function(){
 fetch('./static/a.json').then(res=>res.json()).then(function(data){
 _this.filelists=data;
 })
-})
+});
+$('#myModal').on('show.bs.modal',
+function(e){
+// e.preventDefault();
+// e.stopPropagation();
+var bar=$(e.relatedTarget);
+var re=bar.data('whatever');
+_this.modalItem=JSON.parse(JSON.stringify(_this.searchList[re]));
+}
+);
 }
 }
 </script>
