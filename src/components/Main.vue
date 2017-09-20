@@ -5,7 +5,7 @@
       
       <div class="input-group">
         <input type="text" class="form-control"  placeholder="keys" v-model="searchQuery">
-        <div class="input-group-addon glyphicon glyphicon-zoom-in"></div>
+        <span class="input-group-addon"><label class="glyphicon glyphicon-zoom-in"></label></span>
       </div>
     </div>
     <!-- <button type="submit" class="btn btn-primary">search</button> -->
@@ -23,9 +23,9 @@
     </thead>
     <tbody>
       <tr v-for="(file,index) in search">
-        <td>{{index+1}}</td>
-        <td v-for="item in file">{{item}}</td>
-        <td>
+        <td class="text-center">{{index+1}}</td>
+        <td class="text-center" v-for="item in file">{{item}}</td>
+        <td class="text-center">
           <div class="btn-group">
             
             <button class="btn btn-default" data-toggle="modal" data-target="#myModal" :data-whatever="index">edit</button>
@@ -52,9 +52,10 @@
             </div>
           </form>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer has-error">
+          <label class="text-danger" v-if="">has error</label>
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-primary" @click="saveChange">Save changes</button>
         </div>
       </div>
     </div>
@@ -88,6 +89,9 @@ return (a===b?0:a>b?1:-1)*_this.order[key]
 });
 },
 dosomething:function(){
+},
+saveChange:function(){
+  console.log("saveChange");
 }
 
 },
