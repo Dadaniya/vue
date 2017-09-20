@@ -2,10 +2,19 @@
 <div>
   <form class="form-inline">
     <div class="form-group">
-      
-      <div class="input-group">
-        <input type="text" class="form-control"  placeholder="keys" v-model="searchQuery">
-        <span class="input-group-addon"><label class="glyphicon glyphicon-zoom-in"></label></span>
+      <div class="row">
+        <div class="col-md-7">
+          <div class="input-group">
+            <input type="text" class="form-control"  placeholder="keys" v-model="searchQuery">
+            <span class="input-group-addon"><label class="glyphicon glyphicon-zoom-in"></label></span>
+          </div>
+          
+        </div>
+        <div class="col-md-5">
+          <input class="control-label btn btn-default" type="button" value="new" data-toggle="modal" data-target="#myModal" :data-whatever="-1">
+          
+        </div>
+        
       </div>
     </div>
     <!-- <button type="submit" class="btn btn-primary">search</button> -->
@@ -59,7 +68,7 @@
         </div>
       </div>
     </div>
-</div>
+  </div>
 </div>
 </template>
 <script>
@@ -91,9 +100,8 @@ return (a===b?0:a>b?1:-1)*_this.order[key]
 dosomething:function(){
 },
 saveChange:function(){
-  console.log("saveChange");
+console.log("saveChange");
 }
-
 },
 computed:{
 search:function(){
@@ -118,7 +126,15 @@ function(e){
 // e.stopPropagation();
 var bar=$(e.relatedTarget);
 var re=bar.data('whatever');
+switch (re){
+case -1:
+_this.modalItem={};
+_this.cols.forEach(x=>_this.modalItem[x]='');console.log(_this.modalItem);
+break;
+default:
 _this.modalItem=JSON.parse(JSON.stringify(_this.searchList[re]));
+
+}
 }
 );
 }
