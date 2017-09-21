@@ -59,6 +59,12 @@
                 <input type="text" class="form-control" v-model="modalItem[key]"/>
               </div>
             </div>
+            <div class="form-group" v-if="actionType=='post'">
+              <label class="col-sm-2 control-label">活动文件</label>
+              <div class="col-sm-10">
+                <input type="file" class="form-control" name="file" multiple="multiple">
+              </div>
+            </div>
           </form>
         </div>
         <div class="modal-footer has-error">
@@ -133,7 +139,7 @@ _this.modalItem={};
 break;
 default:
 _this.actionType='update'
-_this.modalItem=JSON.parse(JSON.stringify(_this.searchList[re]));
+_this.modalItem=Object.assign({},_this.searchList[re]);//JSON.parse(JSON.stringify(_this.searchList[re]));
 
 }
 }
